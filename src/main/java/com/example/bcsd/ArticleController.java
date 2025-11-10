@@ -42,6 +42,9 @@ public class ArticleController {
     @GetMapping("/{id}")
     public Article read(@PathVariable int id) {
         Article article = articles.get(id);
+        if (article == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Article not found");
+        }
         return article;
     }
 
