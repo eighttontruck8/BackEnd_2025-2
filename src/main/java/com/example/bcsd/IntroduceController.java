@@ -25,7 +25,7 @@ public class IntroduceController {
         return "hello " + name + "!";
     }
 //    <1>
-//    @GetMapping("/introduce/json") // 쿼리는 여기에 미포함
+//    @GetMapping("/introduce/json")
 //    @ResponseBody
 //    public String introduce3(){
 //        return "{\"name\":\"해인\",\"age\":24}";
