@@ -6,15 +6,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HelloController {
-
-    @ResponseBody
+    //  @ResponseBody
     @GetMapping("/hello")
     public String hello() {
-        return "Hello World!!!!!";
-    }
-
-    @GetMapping("/hello2")
-    public String hello2() {
-        return "hello";
+//        return "Hello World"; //Hello World 라는 문자열을 반환
+        return "hello"; //templates/hello.html 을 반환
     }
 }
