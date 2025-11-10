@@ -43,6 +43,9 @@ public class ArticleController {
     @GetMapping("/{id}")
     public ResponseEntity<Article> read(@PathVariable int id) {
         Article article = articles.get(id);
+        if (article == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         return ResponseEntity.ok(article);
     }
 
