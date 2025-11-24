@@ -8,8 +8,11 @@ import java.util.List;
 
 @Service
 public class ArticleService {
-    private MemoryArticleRepository articleRepository;
+    private final MemoryArticleRepository articleRepository;
 
+    public ArticleService(MemoryArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
     // 1. CREATE
     public Article create(Article article){
         // ★★★★★ sequence 할당해주기x repo에 함수 다 만들어뒀으니 갖다 쓰기만 하면됨!!!!

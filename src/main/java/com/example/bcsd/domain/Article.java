@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Article {
     private long id;
-    private long authorId;
+    private String author;
     private long boardId;
     private String title;
     private String content;
@@ -21,12 +21,12 @@ public class Article {
         this.id = id;
     }
 
-    public long getAuthorId() {
-        return authorId;
+    public String getAuthorId() {
+        return author;
     }
 
-    public void setAuthorId(long authorId) {
-        this.authorId = authorId;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public long getBoardId() {
