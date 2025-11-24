@@ -38,7 +38,6 @@ public class DataLoader {
         sample3.setAuthor("회원333333");
         sample3.setCreatedAt(LocalDateTime.now());
         sample3.setContent("내용3입니다~!!!!!~~~~");
-
         articleRepository.save(sample3);
     }
 }
