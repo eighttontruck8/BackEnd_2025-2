@@ -3,14 +3,18 @@ package com.example.bcsd.service;
 
 import com.example.bcsd.domain.Member;
 import com.example.bcsd.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MemberService {
     // 우선 회원 리포지토리를 가져오자.
     private final MemberRepository memberRepository;
 
+    @Autowired // 생성자 호출할 때 MemberRepository(실제로는 구현부인 MemoryMemberRepository)를 넣어줌!
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }

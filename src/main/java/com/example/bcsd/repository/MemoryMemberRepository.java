@@ -1,8 +1,11 @@
 package com.example.bcsd.repository;
 
 import com.example.bcsd.domain.Member;
+import org.springframework.stereotype.Repository;
+
 import java.util.*;
 
+@Repository
 public class MemoryMemberRepository implements MemberRepository {
 
     // 실제 저장되는 곳
