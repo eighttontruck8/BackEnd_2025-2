@@ -3,7 +3,6 @@
 package com.example.bcsd.controller;
 
 import com.example.bcsd.dto.HelloDTO;
-import com.example.bcsd.service.HelloService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/introduce")
 public class HelloController {
-
-    private final HelloService helloService;
-    public HelloController(HelloService helloService){
-        this.helloService = helloService;
-    }
 
     // 1) /introduce/html -> introduce.html 반환
     @GetMapping("/html")
