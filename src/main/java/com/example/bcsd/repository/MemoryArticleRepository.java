@@ -15,32 +15,32 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     // 1. GET(조회)
-    
+
     // b. boardId로 게시판의 게시물들을 JSON 배열로 반환
     // /articles?boardId={boardId}
-    public Article findByBoardId(Long id){
+    public List<Article> findByBoardId(Long BoardId){
         String sql = "select * from articles where board_id = ?";
-        return jdbctemplate.queryForObject(sql, new ArticleRowMapper(), )
+        return jdbctemplate.query(sql, new ArticleRowMapper(), BoardId);
     };
 
     // c. article의 id로 해당 article 하나 조회
     // /articles/{id}
     @Override
-    public Optional<Article> findById(Long id){  //ID로 회원 정보 가져오기
+    public Article findById(Long id){  //ID로 회원 정보 가져오기
         String sql = "select * from article where id = ?";
-        return jdbctemplate.query(sql, new ArticleRowMapper(), id);
+        return jdbctemplate.queryForObject(sql, new ArticleRowMapper(), id);
     }
 
-    // 2. POST(등록) + 3. PUT(수정)
-    @Override
-    public Article save(Article article){
-        article.setId(++sequence); // id값 설정
-        articles.put(article.getId(), article); //id값+member 합치기
-        return article;
-    }
-
-    // 4. DELETE(삭제)
-    public void deleteById(Long id){
-        articles.remove(id);
-    }
+//    // 2. POST(등록) + 3. PUT(수정)
+//    @Override
+//    public Article save(Article article){
+//        article.setId(++sequence); // id값 설정
+//        articles.put(article.getId(), article); //id값+member 합치기
+//        return article;
+//    }
+//
+//    // 4. DELETE(삭제)
+//    public void deleteById(Long id){
+//        articles.remove(id);
+//    }
 }

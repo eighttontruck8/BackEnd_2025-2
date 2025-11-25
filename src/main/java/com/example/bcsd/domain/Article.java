@@ -68,4 +68,5 @@ public class Article {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
 }
