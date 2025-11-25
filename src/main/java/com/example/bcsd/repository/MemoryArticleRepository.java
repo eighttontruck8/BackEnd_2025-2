@@ -14,28 +14,22 @@ public class MemoryArticleRepository implements ArticleRepository {
         this.jdbctemplate = jdbctemplate;
     }
 
-    private static long sequence = 0L;
-
     // 1. GET(조회)
-    // a. boardId로 html 뷰 반환
-    // /posts?boardId={boardId}
-
-
+    
     // b. boardId로 게시판의 게시물들을 JSON 배열로 반환
     // /articles?boardId={boardId}
-    // findByBoardId();
+    public Article findByBoardId(Long id){
+        String sql = "select * from articles where board_id = ?";
+        return jdbctemplate.queryForObject(sql, new ArticleRowMapper(), )
+    };
 
     // c. article의 id로 해당 article 하나 조회
+    // /articles/{id}
     @Override
     public Optional<Article> findById(Long id){  //ID로 회원 정보 가져오기
         String sql = "select * from article where id = ?";
         return jdbctemplate.query(sql, new ArticleRowMapper(), id);
     }
-
-//    // 1-1. GET(모든 ARTICLE 조회)
-//    public List<Article> findAll(){
-//        return new ArrayList<>(articles.values());
-//    }
 
     // 2. POST(등록) + 3. PUT(수정)
     @Override
