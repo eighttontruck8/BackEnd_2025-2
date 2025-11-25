@@ -18,6 +18,7 @@ public class DataLoader {
 
     @PostConstruct
     public void init() {
+
         Article sample1 = new Article();
 
         sample1.setTitle("제목1");
