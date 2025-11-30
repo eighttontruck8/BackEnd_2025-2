@@ -1,6 +1,8 @@
 package com.example.bcsd.controller;
 
 import com.example.bcsd.service.ArticleService;
+import com.example.bcsd.service.BoardService;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +18,8 @@ public class PostController {
     }
 
     @GetMapping
-    public String posts(@RequestParam("boardId") String boardName, Long boardId, Model model) {
+    public String posts(@RequestParam("boardId") Long boardId, Model model) {
+        String boardName = BoardService.getBoardName(boardId);
         model.addAttribute("boardName", boardName);
         model.addAttribute("articles", articleService.getAllArticlesByBoard(boardId));
         return "posts";
