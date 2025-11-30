@@ -18,9 +18,9 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     // b. boardId로 게시판의 게시물들을 JSON 배열로 반환
     // /articles?boardId={boardId}
-    public List<Article> findByBoardId(Long BoardId){
-        String sql = "select * from articles where board_id = ?";
-        return jdbctemplate.query(sql, new ArticleRowMapper(), BoardId);
+    public List<Article> findByBoardId(Long board_id){
+        String sql = "select * from article where board_id = ?";
+        return jdbctemplate.query(sql, new ArticleRowMapper(), board_id);
     };
 
     // c. article의 id로 해당 article 하나 조회

@@ -16,8 +16,8 @@ public class PostController {
     }
 
     @GetMapping
-    public String posts(@RequestParam Long boardId, Model model) {
-        model.addAttribute("boardName", boardId);
+    public String posts(@RequestParam("boardId") String boardName, Long boardId, Model model) {
+        model.addAttribute("boardName", boardName);
         model.addAttribute("articles", articleService.getAllArticlesByBoard(boardId));
         return "posts";
     }

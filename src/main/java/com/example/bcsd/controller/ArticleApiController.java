@@ -16,7 +16,7 @@ public class ArticleApiController {
         this.articleService = articleService;
     }
 
-    // 1. GET /articles/{id} : 아이디로 article 찾기
+    // 3. GET /articles/{id} : 아이디로 article 찾기
     @GetMapping("/{id}")
     public Article getOne(@PathVariable Long id){
         return articleService.getOne(id);
