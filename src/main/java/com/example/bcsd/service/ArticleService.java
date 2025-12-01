@@ -41,6 +41,13 @@ public class ArticleService {
     // 2. CREATE
     public Article create(ArticleDTO req){
         validateForCreate(req);
+        if (!memberRepository.existsById(req.getAuthorId())) {
+            throw new InvalidReferenceException("존재하지 않는 사용자입니다. author_id: " + req.getAuthorId());
+        }
+
+        if (!boardRepository.existsById(req.getBoardId())) {
+            throw new InvalidReferenceException("존재하지 않는 게시판입니다. board_id: " + req.getBoardId());
+        }
 
         Article article = new Article();
         article.setTitle(req.getTitle());
