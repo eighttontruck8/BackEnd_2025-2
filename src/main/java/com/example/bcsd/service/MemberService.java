@@ -2,7 +2,6 @@
 package com.example.bcsd.service;
 
 import com.example.bcsd.domain.Member;
-import com.example.bcsd.dto.MemberDTO;
 import com.example.bcsd.repository.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,11 +23,11 @@ public class MemberService {
         return memberRepository.insert(member);
     }
 
-    public Member update(Long id, MemberDTO req) {
-        Member member = memberRepository.findById(id);
-        member.setName(req.getName());
-        member.setEmail(req.getEmail());
-        member.setPassword(req.getPassword());
+    public Member update(Member member) {
+//        Member member = memberRepository.findById(id);
+//        member.setName(req.getName());
+//        member.setEmail(req.getEmail());
+//        member.setPassword(req.getPassword());
 
         return memberRepository.update(member);
     }

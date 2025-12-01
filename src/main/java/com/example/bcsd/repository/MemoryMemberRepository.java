@@ -38,7 +38,7 @@ public class MemoryMemberRepository implements MemberRepository {
     @Override
     public Member update(Member member) {
         String sql = "UPDATE member SET name = ?, email = ? , password=? WHERE id = ?";
-        jdbctemplate.update(sql, member.getName(), member.getEmail(), member.getId());
+        jdbctemplate.update(sql, member.getName(), member.getEmail(), member.getPassword(), member.getId());
         return findById(member.getId());
     }
 
