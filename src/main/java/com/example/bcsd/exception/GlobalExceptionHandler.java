@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateEmailException.class)
     public ResponseEntity<String> handleDuplicateEmail(DuplicateEmailException ex) {
         return ResponseEntity
-                .status(HttpStatus.CONFLICT)
+                .status(409)
                 .body(ex.getMessage());
     }
 }

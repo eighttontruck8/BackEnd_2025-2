@@ -21,17 +21,22 @@ public class MemberController {
     }
     // 1. member 생성
     @PostMapping
-    public Member create(@RequestBody Member member) {
+    public Member create(@RequestBody MemberDTO req) {
+        Member member = new Member();
+        member.setName(req.getName());
+        member.setEmail(req.getEmail());
+        member.setPassword(req.getPassword());
 
         return memberService.create(member);
     }
+
     // 2. member 정보 수정
     @PutMapping("/{id}")
     public Member update(@PathVariable Long id,
-                         @RequestBody Member member) {
-        member.setId(id); // body에 id넣지 않아도 자동 세팅되도록
-        return memberService.update(member);
+                         @RequestBody MemberDTO req) {
+        return memberService.update(req, id);
     }
+
     // 3. member 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
