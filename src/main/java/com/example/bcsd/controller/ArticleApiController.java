@@ -19,8 +19,8 @@ public class ArticleApiController {
     }
     // 1. POST /articles : 게시글 저장하기
     @PostMapping
-    public Article create(@RequestBody Article article){ // ??
-        return articleService.create(article);
+    public Article create(@RequestBody ArticleDTO req){ // ??
+        return articleService.create(req);
     }
 
     // 2. GET /articles?boardId={boardId} : 한 게시판의 모든 article 조회하기

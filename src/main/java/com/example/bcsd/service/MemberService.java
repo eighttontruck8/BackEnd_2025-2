@@ -1,8 +1,10 @@
 // 모든 비즈니스 로직들을 작성한다.
 package com.example.bcsd.service;
 import com.example.bcsd.domain.Member;
+import com.example.bcsd.dto.ArticleDTO;
 import com.example.bcsd.dto.MemberDTO;
 import com.example.bcsd.exception.DuplicateEmailException;
+import com.example.bcsd.exception.MissingFieldException;
 import com.example.bcsd.repository.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,14 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public Member create(Member member) {
+    public Member create(MemberDTO req) {
+        validateForCreate(req);
+
+        Member member = new Member();
+        member.setName(req.getName());
+        member.setEmail(req.getEmail());
+        member.setPassword(req.getPassword());
+
         return memberRepository.insert(member);
     }
 
@@ -48,5 +57,19 @@ public class MemberService {
 
     public boolean delete(Long id) {
         return memberRepository.deleteById(id);
+    }
+    private void validateForCreate(MemberDTO req) {
+
+        if (req.getName() == null || req.getName().isBlank()) {
+            throw new MissingFieldException("name은 null일 수 없습니다.");
+        }
+
+        if (req.getEmail() == null || req.getEmail().isBlank()) {
+            throw new MissingFieldException("email은 null일 수 없습니다.");
+        }
+
+        if (req.getPassword() == null || req.getPassword().isBlank()) {
+            throw new MissingFieldException("password은 null일 수 없습니다.");
+        }
     }
 }

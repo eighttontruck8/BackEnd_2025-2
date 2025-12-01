@@ -74,6 +74,7 @@ public class MemoryMemberRepository implements MemberRepository {
         return jdbctemplate.query(sql, rowMapper);
     }
 
+    @Override
     public boolean deleteById(Long id){
         String sql = "DELETE FROM article WHERE id = ?";
         int rows = jdbctemplate.update(sql, id);

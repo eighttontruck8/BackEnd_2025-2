@@ -4,6 +4,7 @@ import com.example.bcsd.domain.Article;
 import com.example.bcsd.dto.ArticleDTO;
 
 import com.example.bcsd.exception.InvalidReferenceException;
+import com.example.bcsd.exception.MissingFieldException;
 import com.example.bcsd.repository.ArticleRepository;
 import com.example.bcsd.repository.MemoryArticleRepository;
 import com.example.bcsd.repository.MemoryMemberRepository;
@@ -38,7 +39,15 @@ public class ArticleService {
         return articleRepository.findById(id);
     }
     // 2. CREATE
-    public Article create(Article article){
+    public Article create(ArticleDTO req){
+        validateForCreate(req);
+
+        Article article = new Article();
+        article.setTitle(req.getTitle());
+        article.setContent(req.getContent());
+        article.setAuthorId(req.getAuthorId());
+        article.setBoardId(req.getBoardId());
+
         return articleRepository.insert(article);
     }
     // 3. UPDATE
@@ -64,4 +73,24 @@ public class ArticleService {
     public boolean delete(Long id){
         return articleRepository.deleteById(id);
     }
+
+    private void validateForCreate(ArticleDTO req) {
+
+        if (req.getTitle() == null || req.getTitle().isBlank()) {
+            throw new MissingFieldException("title은 null일 수 없습니다.");
+        }
+
+        if (req.getContent() == null || req.getContent().isBlank()) {
+            throw new MissingFieldException("content는 null일 수 없습니다.");
+        }
+
+        if (req.getAuthorId() == null) {
+            throw new MissingFieldException("authorId는 null일 수 없습니다.");
+        }
+
+        if (req.getBoardId() == null) {
+            throw new MissingFieldException("boardId는 null일 수 없습니다.");
+        }
+    }
+
 }

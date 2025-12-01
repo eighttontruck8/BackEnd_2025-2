@@ -22,12 +22,7 @@ public class MemberController {
     // 1. member 생성
     @PostMapping
     public Member create(@RequestBody MemberDTO req) {
-        Member member = new Member();
-        member.setName(req.getName());
-        member.setEmail(req.getEmail());
-        member.setPassword(req.getPassword());
-
-        return memberService.create(member);
+        return memberService.create(req);
     }
 
     // 2. member 정보 수정
