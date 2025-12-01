@@ -58,7 +58,7 @@ public class MemoryArticleRepository implements ArticleRepository {
         // date까지 채워진 상태를 다시 조회해서 리턴해주기.
         return findById(id);
     }
-//       3. PUT(수정)
+    // 3. PUT(수정)
     @Override
     public Article update(Article article){
         String sql = "UPDATE article SET title = ?, content = ? WHERE id = ?";

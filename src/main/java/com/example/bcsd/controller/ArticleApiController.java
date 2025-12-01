@@ -33,7 +33,9 @@ public class ArticleApiController {
     }
     // 4. PUT : 게시글 수정하기
     @PutMapping("/{id}")
-    public Article update(Article article){
+    public Article update(@PathVariable Long id,
+                          @RequestBody Article article){
+        article.setId(id); // body에 id넣지 않아도 자동 세팅되도록
         return articleService.update(article);
     }
 //    // 5. DELETE /articles/{id} : id로 삭제하기
