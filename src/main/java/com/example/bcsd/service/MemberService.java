@@ -2,60 +2,45 @@
 package com.example.bcsd.service;
 
 import com.example.bcsd.domain.Member;
-import com.example.bcsd.repository.MemberRepository;
+import com.example.bcsd.dto.MemberDTO;
+import com.example.bcsd.repository.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class MemberService {
-    // 우선 회원 리포지토리를 가져오자.
-    private final MemberRepository memberRepository;
+    // 우선 회원 리포지토리를 가져오자
+    private final MemoryMemberRepository memberRepository;
 
     @Autowired // 생성자 호출할 때 MemberRepository(실제로는 구현부인 MemoryMemberRepository)를 넣어줌!
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemoryMemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
 
-    // 회원 가입
-    public Long join(Member member){
-        // 신규 회원 정보 저장
-        // 만약 동명이인이 있다면, 불가능하다.
-//        // [1] 정직한 버전
-//        Optional<Member> result = memberRepository.findByName(member.getName());
-//        // 만약 값이 이미 존재한다면: 예외처리
-//        result.ifPresent(m -> {
-//            throw new IllegalStateException("이미 존재하는 회원입니다");
-//        });
-
-        // [2] 축약 버전
-//            memberRepository.findByName(member.getName());
-//              .ifPresent(m -> {
-//              throw new IllegalStateException("이미 존재하는 회원입니다");
-//               });
-
-        // [3] 메서드로 추출한 버전 (길어져서)
-        validateDuplicateMember(member);
-        memberRepository.save(member);
-        return member.getId();
+    public Member create(Member member) {
+        return memberRepository.insert(member);
     }
 
-    private void validateDuplicateMember(Member member) {
-        memberRepository.findByName(member.getName())
-            .ifPresent(m -> {
-                throw new IllegalStateException("이미 존재하는 회원입니다");
-            });
-    }
+    public Member update(Long id, MemberDTO req) {
+        Member member = memberRepository.findById(id);
+        member.setName(req.getName());
+        member.setEmail(req.getEmail());
+        member.setPassword(req.getPassword());
 
-    // 전체 회원 조회
-    public List<Member> findMembers(){
-        return memberRepository.findAll();
+        return memberRepository.update(member);
     }
-
-    // id로 고객 찾기
-    public Optional<Member> findOne(Long id){
+    public Member getOne(Long id) {
         return memberRepository.findById(id);
+    }
+
+    public List<Member> searchByName(String name) {
+        return memberRepository.findByName(name);
+    }
+
+    public boolean delete(Long id) {
+        return memberRepository.deleteById(id);
     }
 }

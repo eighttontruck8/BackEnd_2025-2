@@ -1,43 +1,80 @@
 package com.example.bcsd.repository;
-
 import com.example.bcsd.domain.Member;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.*;
 
 @Repository
 public class MemoryMemberRepository implements MemberRepository {
+    private final JdbcTemplate jdbctemplate;
+    private final MemberRowMapper rowMapper = new MemberRowMapper();
 
-    // 실제 저장되는 곳
-    private static Map<Long, Member> store = new HashMap<>();
-    private static long sequence = 0L; // key값 생성
-
-    @Override
-    public Member save(Member member) {
-        member.setId(++sequence); // id값 설정
-        store.put(member.getId(), member); //id값+member 합치기
-        return member;
+    public MemoryMemberRepository(JdbcTemplate jdbctemplate) {
+        this.jdbctemplate = jdbctemplate;
     }
 
     @Override
-    public Optional<Member> findById(Long id) {
-        // return store.get(id); // 없으면 null이 반환되기 때문에...
-        return Optional.ofNullable(store.get(id)); // Optional.ofNullable로 감싸면 클라이언트에서 대처 가능
+    public Member insert(Member member) {
+        String sql = "INSERT INTO member (name, email, password)"
+                + "VALUES (?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbctemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, member.getName());
+            ps.setString(2, member.getEmail());
+            ps.setString(3, member.getPassword());
+            return ps;
+        }, keyHolder);
+
+        Long newId = keyHolder.getKey().longValue();
+        return findById(newId);
     }
 
     @Override
-    public Optional<Member> findByName(String name) {
-        return store.values().stream()
-                .filter(member -> member.getName().equals(name)) // 두 값이 같은 경우에만 필터링 됨
-                .findAny();
+    public Member update(Member member) {
+        String sql = "UPDATE member SET name = ?, email = ? , password=? WHERE id = ?";
+        jdbctemplate.update(sql, member.getName(), member.getEmail(), member.getId());
+        return findById(member.getId());
+    }
+
+    @Override
+    public Member findById(Long id) {
+        String sql = "SELECT * FROM member WHERE id = ?";
+        return jdbctemplate.queryForObject(sql, new MemberRowMapper(), id);
+    }
+
+    @Override
+    public List<Member> findByName(String name) { // 동명이인 발생 가능
+        String sql = "SELECT * FROM member where name = ?";
+        return jdbctemplate.query(sql, rowMapper, name);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        String sql = "SELECT COUNT(*) FROM member WHERE email = ?";
+        Integer count = jdbctemplate.queryForObject(sql, Integer.class, email);
+        return count != null && count > 0;
     }
 
     @Override
     public List<Member> findAll() {
-        return new ArrayList<>(store.values()); // values가 member들임!
+        String sql = "SELECT * FROM member";
+        return jdbctemplate.query(sql, rowMapper);
     }
 
-    public void clearStore(){
-        store.clear(); // 초기화
+    public boolean deleteById(Long id){
+        String sql = "DELETE FROM article WHERE id = ?";
+        int rows = jdbctemplate.update(sql, id);
+
+        if (rows == 0) {
+            throw new IllegalArgumentException(id + "번 사용자가 존재하지 않습니다.");
+        }
+        return false;
     }
+
 }
