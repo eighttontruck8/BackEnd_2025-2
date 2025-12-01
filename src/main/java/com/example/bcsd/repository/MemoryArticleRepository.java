@@ -80,9 +80,14 @@ public class MemoryArticleRepository implements ArticleRepository {
         }
         return false;
     }
-    public boolean existsByAuthorId(Long author_id){
+    public boolean existsByAuthorId(Long authorId){
         String sql = "select count(*) from article where author_id = ?";
-        int count = jdbctemplate.queryForObject(sql, new Object[]{author_id}, Integer.class);
+        int count = jdbctemplate.queryForObject(sql, new Object[]{authorId}, Integer.class);
+        return count > 0;
+    }
+    public boolean existsByBoardId(Long boardId){
+        String sql = "select count(*) from board where board_id = ?";
+        int count = jdbctemplate.queryForObject(sql, new Object[]{boardId}, Integer.class);
         return count > 0;
     }
 }

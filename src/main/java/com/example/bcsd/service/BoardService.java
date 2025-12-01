@@ -2,14 +2,19 @@ package com.example.bcsd.service;
 import com.example.bcsd.domain.Board;
 import com.example.bcsd.dto.BoardDTO;
 import com.example.bcsd.exception.MissingFieldException;
+import com.example.bcsd.exception.RemainArticlesException;
 import com.example.bcsd.repository.BoardRepository;
+import com.example.bcsd.repository.MemoryArticleRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
-    public BoardService(BoardRepository boardRepository){
+    private final MemoryArticleRepository articleRepository;
+
+    public BoardService(BoardRepository boardRepository,  MemoryArticleRepository articleRepository) {
         this.boardRepository=boardRepository;
+        this.articleRepository=articleRepository;
     }
 
     public Board create(BoardDTO req) {
@@ -18,6 +23,9 @@ public class BoardService {
     }
 
     public boolean delete(Long id) {
+        if (articleRepository.existsByAuthorId(id)){
+            throw new RemainArticlesException("게시판에 작성한 게시글이 남아있어 삭제가 불가능합니다. board_id =" + id);
+        }
         return boardRepository.delete(id);
     }
 
