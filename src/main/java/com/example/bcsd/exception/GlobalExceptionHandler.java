@@ -36,6 +36,14 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
-    // 3. 생성 예외처리 - 2. 게시물(Article) 생성 시 존재하지 않는 사용자 혹은 게시판을 참조하는 경우 400
+    // 4. 삭제 예외처리 - 1. 사용자(Member) 삭제 시 사용자가 작성한 게시물이 하나라도 있으면 400
+    @ExceptionHandler(RemainArticlesException.class)
+    public ResponseEntity<String> handleRemainArticles(RemainArticlesException ex){
+        return ResponseEntity
+                .status(400)
+                .body(ex.getMessage());
+    }
 
+
+    // 4. 삭제 예외처리 - 2. 게시판(Board) 삭제 시 해당 게시판에 작성된 게시물이 하나라도 있으면 400
 }
