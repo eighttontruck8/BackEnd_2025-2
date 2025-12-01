@@ -16,4 +16,11 @@ public class BoardRepository {
         String sql = "SELECT name FROM board WHERE id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, id);
     }
+
+    public boolean existsById(Long id) {
+        String sql = "SELECT COUNT(*) FROM board WHERE id = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, id);
+        return count != null && count > 0;
+    }
+
 }

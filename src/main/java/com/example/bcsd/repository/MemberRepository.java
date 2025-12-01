@@ -10,6 +10,6 @@ public interface MemberRepository {
     Member findById(Long id); //ID로 회원 정보 가져오기
     List<Member> findByName(String name); // 이름으로 회원 정보 가져오기
     List<Member> findAll(); // 이름으로 회원 정보 가져오기
-
     boolean existsByEmail(String email);
+    boolean existsById(Long id);
 }

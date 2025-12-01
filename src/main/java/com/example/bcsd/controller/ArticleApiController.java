@@ -25,7 +25,8 @@ public class ArticleApiController {
 
     // 2. GET /articles?boardId={boardId} : 한 게시판의 모든 article 조회하기
     @GetMapping
-    public List<Article> getAllArticlesByBoard(Long boardId){
+    public List<Article> getAllArticlesByBoard(
+            @RequestParam(required = false) Long boardId){
         return articleService.getAllArticlesByBoard(boardId);
     }
 

@@ -61,8 +61,13 @@ public class MemoryArticleRepository implements ArticleRepository {
     // 3. PUT(수정)
     @Override
     public Article update(Article article){
-        String sql = "UPDATE article SET title = ?, content = ? WHERE id = ?";
-        jdbctemplate.update(sql, article.getTitle(), article.getContent(), article.getId());
+        String sql = "UPDATE article SET title = ?, content = ?, author_id = ?, board_id = ? WHERE id = ?";
+        jdbctemplate.update(sql,
+                article.getTitle(),
+                article.getContent(),
+                article.getAuthorId(),
+                article.getBoardId(),
+                article.getId());
         return findById(article.getId());
     }
     // 4. DELETE(삭제)

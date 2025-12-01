@@ -62,6 +62,13 @@ public class MemoryMemberRepository implements MemberRepository {
     }
 
     @Override
+    public boolean existsById(Long id) {
+        String sql = "SELECT COUNT(*) FROM member WHERE id = ?";
+        Integer count = jdbctemplate.queryForObject(sql, Integer.class, id);
+        return count != null && count > 0;
+    }
+
+    @Override
     public List<Member> findAll() {
         String sql = "SELECT * FROM member";
         return jdbctemplate.query(sql, rowMapper);
