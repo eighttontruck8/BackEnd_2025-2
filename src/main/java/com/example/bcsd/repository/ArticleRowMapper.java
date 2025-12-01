@@ -17,11 +17,10 @@ public class ArticleRowMapper implements RowMapper<Article> {
 
         // setter
         article.setId(rs.getLong("id"));
-        article.setAuthorId(rs.getLong("author_id"));
-        article.setAuthorId(rs.getLong("board_id"));
-
         article.setTitle(rs.getString("title"));
         article.setContent(rs.getString("content"));
+        article.setAuthorId(rs.getLong("author_id"));
+        article.setBoardId(rs.getLong("board_id"));
 
         article.setCreatedAt(rs.getTimestamp("created_date").toLocalDateTime());
         article.setUpdatedAt(rs.getTimestamp("modified_date").toLocalDateTime());

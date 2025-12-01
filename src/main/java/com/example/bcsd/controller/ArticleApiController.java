@@ -1,6 +1,8 @@
 package com.example.bcsd.controller;
 
 import com.example.bcsd.domain.Article;
+import com.example.bcsd.dto.ArticleDTO;
+
 import com.example.bcsd.service.ArticleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,9 +38,8 @@ public class ArticleApiController {
     // 4. PUT : 게시글 수정하기
     @PutMapping("/{id}")
     public Article update(@PathVariable Long id,
-                          @RequestBody Article article){
-        article.setId(id); // body에 id넣지 않아도 자동 세팅되도록
-        return articleService.update(article);
+                          @RequestBody ArticleDTO req){
+        return articleService.update(req, id);
     }
 
     // 5. DELETE /articles/{id} : id로 삭제하기

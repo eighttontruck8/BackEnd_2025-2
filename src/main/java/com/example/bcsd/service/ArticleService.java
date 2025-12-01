@@ -1,6 +1,8 @@
 package com.example.bcsd.service;
 
 import com.example.bcsd.domain.Article;
+import com.example.bcsd.dto.ArticleDTO;
+
 import com.example.bcsd.repository.MemoryArticleRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,12 @@ public class ArticleService {
         return articleRepository.insert(article);
     }
     // 3. UPDATE
-    public Article update(Article article){
+    public Article update(ArticleDTO req, Long id){
+        Article article = articleRepository.findById(id);
+
+        article.setTitle(req.getTitle());
+        article.setContent(req.getContent());
+
         return articleRepository.update(article);
     }
     // 4. DELETE
