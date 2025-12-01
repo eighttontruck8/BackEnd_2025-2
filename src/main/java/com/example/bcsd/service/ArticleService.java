@@ -31,8 +31,8 @@ public class ArticleService {
     public Article update(Article article){
         return articleRepository.update(article);
     }
-//    // 4. DELETE
-//    public void delete(Long id){
-//        articleRepository.deleteById(id);
-//    }
+    // 4. DELETE
+    public boolean delete(Long id){
+        return articleRepository.deleteById(id);
+    }
 }

@@ -2,6 +2,7 @@ package com.example.bcsd.controller;
 
 import com.example.bcsd.domain.Article;
 import com.example.bcsd.service.ArticleService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,10 +39,14 @@ public class ArticleApiController {
         article.setId(id); // body에 id넣지 않아도 자동 세팅되도록
         return articleService.update(article);
     }
-//    // 5. DELETE /articles/{id} : id로 삭제하기
-//    @DeleteMapping("/{id}")
-//    public void delete(@PathVariable Long id){
-//        articleService.delete(id);
-//    }
-
+    // 5. DELETE /articles/{id} : id로 삭제하기
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        boolean deleted = articleService.delete(id);
+        if (deleted) {
+            return ResponseEntity.noContent().build(); // 204
+        } else {
+            return ResponseEntity.notFound().build();  // 404
+        }
+    }
 }

@@ -65,8 +65,14 @@ public class MemoryArticleRepository implements ArticleRepository {
         jdbctemplate.update(sql, article.getTitle(), article.getContent(), article.getId());
         return findById(article.getId());
     }
-//    // 4. DELETE(삭제)
-//    public void deleteById(Long id){
-//        articles.remove(id);
-//    }
+    // 4. DELETE(삭제)
+    public boolean deleteById(Long id){
+        String sql = "DELETE FROM article WHERE id = ?";
+        int rows = jdbctemplate.update(sql, id);
+
+        if (rows == 0) {
+            throw new IllegalArgumentException(id + "번 게시글이 없습니다.");
+        }
+        return false;
+    }
 }
