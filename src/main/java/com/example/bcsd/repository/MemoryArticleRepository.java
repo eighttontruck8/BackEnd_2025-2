@@ -2,8 +2,11 @@ package com.example.bcsd.repository;
 
 import com.example.bcsd.domain.Article;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.*;
 
 @Repository
@@ -31,14 +34,37 @@ public class MemoryArticleRepository implements ArticleRepository {
         return jdbctemplate.queryForObject(sql, new ArticleRowMapper(), id);
     }
 
-//    // 2. POST(등록) + 3. PUT(수정)
-//    @Override
-//    public Article save(Article article){
-//        article.setId(++sequence); // id값 설정
-//        articles.put(article.getId(), article); //id값+member 합치기
-//        return article;
-//    }
-//
+    // 2. POST(등록)
+    @Override
+    public Article insert(Article article){
+        String sql = "INSERT INTO article(board_id, author_id, title, content)" +
+                     "VALUES (?, ?, ?, ?)";
+
+        // 자동 증가 PK(id)를 받기 위한 객체 KEYHOLDER
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbctemplate.update(con-> {
+            PreparedStatement ps = con.prepareStatement(sql, new String[]{"id"});
+            ps.setLong(1, article.getBoardId());
+            ps.setLong(2, article.getAuthorId());
+            ps.setString(3, article.getTitle());
+            ps.setString(4, article.getContent());
+            return ps;
+        }, keyHolder);
+
+        // 방금 insert된 row의 id 가져오기 + NULL 처리
+        Long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
+
+        // date까지 채워진 상태를 다시 조회해서 리턴해주기.
+        return findById(id);
+    }
+//       3. PUT(수정)
+    @Override
+    public Article update(Article article){
+        String sql = "UPDATE article SET title = ?, content = ? WHERE id = ?";
+        jdbctemplate.update(sql, article.getTitle(), article.getContent(), article.getId());
+        return findById(article.getId());
+    }
 //    // 4. DELETE(삭제)
 //    public void deleteById(Long id){
 //        articles.remove(id);

@@ -1,11 +1,18 @@
 package com.example.bcsd.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
 
+
 public class Article {
-    private long id;
-    private long authorId;
-    private long boardId;
+    private Long id;
+    @JsonProperty("author_id")
+    private Long authorId;
+
+    @JsonProperty("board_id")
+    private Long boardId;
+
     private String title;
     private String content;
     private LocalDateTime updatedAt;
@@ -13,27 +20,27 @@ public class Article {
 
     public Article(){}
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getAuthorId() {
+    public Long getAuthorId() {
         return authorId;
     }
 
-    public void setAuthorId(long authorId) {
+    public void setAuthorId(Long authorId) {
         this.authorId = authorId;
     }
 
-    public long getBoardId() {
+    public Long getBoardId() {
         return boardId;
     }
 
-    public void setBoardId(long boardId) {
+    public void setBoardId(Long boardId) {
         this.boardId = boardId;
     }
 
