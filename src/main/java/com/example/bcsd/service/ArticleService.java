@@ -21,7 +21,6 @@ public class ArticleService {
     // 1. READ - 하나만
     public Article getOne(Long id){
         return articleRepository.findById(id);
-//                .orElseThrow(() -> new IllegalArgumentException( id+"번 게시글이 없습니다."));
     }
     // 2. CREATE
     public Article create(Article article){

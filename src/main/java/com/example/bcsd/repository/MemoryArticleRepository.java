@@ -24,7 +24,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     public List<Article> findByBoardId(Long board_id){
         String sql = "select * from article where board_id = ?";
         return jdbctemplate.query(sql, new ArticleRowMapper(), board_id);
-    };
+    }
 
     // c. article의 id로 해당 article 하나 조회
     // /articles/{id}
