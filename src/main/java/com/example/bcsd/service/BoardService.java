@@ -13,20 +13,25 @@ public class BoardService {
     private final MemoryArticleRepository articleRepository;
 
     public BoardService(BoardRepository boardRepository,  MemoryArticleRepository articleRepository) {
-        this.boardRepository=boardRepository;
-        this.articleRepository=articleRepository;
+        this.boardRepository = boardRepository;
+        this.articleRepository = articleRepository;
     }
 
     public Board create(BoardDTO req) {
         validateForCreate(req);
-        return boardRepository.insert(req);
+
+        // dto -> entity로 변환
+        Board board = new Board();
+        board.setTitle(req.getTitle());
+
+        return boardRepository.save(board);
     }
 
-    public boolean delete(Long id) {
-        if (articleRepository.existsByAuthorId(id)){
+    public void delete(Long id) {
+        if (articleRepository.existsByBoardId(id)){
             throw new RemainArticlesException("게시판에 작성한 게시글이 남아있어 삭제가 불가능합니다. board_id =" + id);
         }
-        return boardRepository.delete(id);
+        boardRepository.deleteById(id);
     }
 
     private void validateForCreate(BoardDTO req) {
@@ -37,6 +42,8 @@ public class BoardService {
     }
 
     public String getBoardName(Long boardId) {
-        return boardRepository.findById(boardId).getTitle();
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new IllegalArgumentException(boardId + "번 게시판이 없습니다."));
+        return board.getTitle();
     }
 }
