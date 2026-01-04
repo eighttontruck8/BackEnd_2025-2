@@ -34,9 +34,9 @@ public class ArticleService {
         return articleRepository.findByBoardId(boardId);
     }
     // 1. READ - 하나만
-    public Article getOne(Integer id){
+    public Article getOne(Long id){
         return articleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(id + "번 게시글이 없습니다."));;
+                .orElseThrow(() -> new IllegalArgumentException(id + "번 게시글이 없습니다."));
     }
     // 2. CREATE
     public Article create(ArticleDTO req){
@@ -58,7 +58,7 @@ public class ArticleService {
         return articleRepository.save(article);
     }
     // 3. UPDATE
-    public Article update(ArticleDTO req, Integer id){
+    public Article update(ArticleDTO req, Long id){
         if (!memberRepository.existsById(req.getAuthorId())) {
             throw new InvalidReferenceException("존재하지 않는 사용자입니다. author_id: " + req.getAuthorId());
         }
@@ -78,7 +78,10 @@ public class ArticleService {
         return articleRepository.save(article);
     }
     // 4. DELETE
-    public void delete(Integer id){
+    public void delete(Long id){
+        if (!articleRepository.existsById(id)) {
+            throw new IllegalArgumentException(id + "번 게시글이 없습니다.");
+        }
         articleRepository.deleteById(id);
     }
 

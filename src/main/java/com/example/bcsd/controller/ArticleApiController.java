@@ -17,6 +17,7 @@ public class ArticleApiController {
     public ArticleApiController(ArticleService articleService) {
         this.articleService = articleService;
     }
+
     // 1. POST /articles : 게시글 저장하기
     @PostMapping
     public Article create(@RequestBody ArticleDTO req){ // ??
@@ -25,8 +26,7 @@ public class ArticleApiController {
 
     // 2. GET /articles?boardId={boardId} : 한 게시판의 모든 article 조회하기
     @GetMapping
-    public List<Article> getAllArticlesByBoard(
-            @RequestParam(required = false) Long boardId){
+    public List<Article> getAllArticlesByBoard(@RequestParam(required = false) Long boardId){
         return articleService.getAllArticlesByBoard(boardId);
     }
 
@@ -46,11 +46,8 @@ public class ArticleApiController {
     // 5. DELETE /articles/{id} : id로 삭제하기
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        boolean deleted = articleService.delete(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build(); // 204
-        } else {
-            return ResponseEntity.notFound().build();  // 404
-        }
+        articleService.delete(id);
+        // 예외는 service에서만!
+        return ResponseEntity.noContent().build();  // 204
     }
 }

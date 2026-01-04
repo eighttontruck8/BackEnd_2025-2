@@ -3,7 +3,11 @@ package com.example.bcsd.repository;
 import com.example.bcsd.domain.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ArticleRepository extends JpaRepository<Article,Integer> {
+import java.util.List;
 
-    boolean existsByBoardId(Integer id);
+public interface ArticleRepository extends JpaRepository<Article,Long> {
+
+    boolean existsByBoardId(Long id);
+
+    List<Article> findByBoardId(Long boardId);
 }

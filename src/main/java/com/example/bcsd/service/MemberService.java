@@ -5,7 +5,7 @@ import com.example.bcsd.dto.MemberDTO;
 import com.example.bcsd.exception.DuplicateEmailException;
 import com.example.bcsd.exception.MissingFieldException;
 import com.example.bcsd.exception.RemainArticlesException;
-import com.example.bcsd.repository.MemoryArticleRepository;
+import com.example.bcsd.repository.ArticleRepository;
 import com.example.bcsd.repository.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +16,10 @@ import java.util.List;
 @Service
 public class MemberService {
     private final MemoryMemberRepository memberRepository;
-    private final MemoryArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
 
     @Autowired // 생성자 호출할 때 MemberRepository(실제로는 구현부인 MemoryMemberRepository)를 넣어줌!
-    public MemberService(MemoryMemberRepository memberRepository,  MemoryArticleRepository articleRepository) {
+    public MemberService(MemoryMemberRepository memberRepository, ArticleRepository articleRepository) {
         this.memberRepository = memberRepository;
         this.articleRepository = articleRepository;
     }

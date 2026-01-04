@@ -24,11 +24,7 @@ public class BoardController {
     // 2. DELETE /boardId/{id} : 게시판 id로 삭제하기
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        boolean deleted = boardService.delete(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build(); // 204
-        } else {
-            return ResponseEntity.notFound().build();  // 404
-        }
+        boardService.delete(id);
+        return ResponseEntity.noContent().build(); // 204
     }
 }
