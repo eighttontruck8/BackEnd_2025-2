@@ -19,6 +19,7 @@ public class MemberController {
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
+
     // 1. member 생성
     @PostMapping
     public Member create(@RequestBody MemberDTO req) {
@@ -35,19 +36,17 @@ public class MemberController {
     // 3. member 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        boolean deleted = memberService.delete(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build(); // 204
-        } else {
-            return ResponseEntity.notFound().build();  // 404
-        }
+        memberService.delete(id);
+        return ResponseEntity.noContent().build(); // 204
     }
+
     // 4. member 조회
     // 4-1. id로 조회
     @GetMapping("/{id}")
     public Member getOne(@PathVariable Long id) {
         return memberService.getOne(id);
     }
+
     // 4-2. name으로 조회
     @GetMapping("/search")
     public List<Member> searchByName(@RequestParam String name) {

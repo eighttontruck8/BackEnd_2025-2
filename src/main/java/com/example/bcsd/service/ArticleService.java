@@ -6,7 +6,7 @@ import com.example.bcsd.dto.ArticleDTO;
 import com.example.bcsd.exception.InvalidReferenceException;
 import com.example.bcsd.exception.MissingFieldException;
 import com.example.bcsd.repository.ArticleRepository;
-import com.example.bcsd.repository.MemoryMemberRepository;
+import com.example.bcsd.repository.MemberRepository;
 import com.example.bcsd.repository.BoardRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +17,12 @@ import java.util.List;
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
-    private final MemoryMemberRepository memberRepository;
+    private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
 
     @Autowired
     public ArticleService(ArticleRepository articleRepository,
-                          MemoryMemberRepository memberRepository,
+                          MemberRepository memberRepository,
                           BoardRepository boardRepository) {
         this.articleRepository = articleRepository;
         this.memberRepository = memberRepository;

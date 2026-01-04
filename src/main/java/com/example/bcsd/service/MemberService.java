@@ -6,7 +6,7 @@ import com.example.bcsd.exception.DuplicateEmailException;
 import com.example.bcsd.exception.MissingFieldException;
 import com.example.bcsd.exception.RemainArticlesException;
 import com.example.bcsd.repository.ArticleRepository;
-import com.example.bcsd.repository.MemoryMemberRepository;
+import com.example.bcsd.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +15,11 @@ import java.util.List;
 
 @Service
 public class MemberService {
-    private final MemoryMemberRepository memberRepository;
+    private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
 
     @Autowired // 생성자 호출할 때 MemberRepository(실제로는 구현부인 MemoryMemberRepository)를 넣어줌!
-    public MemberService(MemoryMemberRepository memberRepository, ArticleRepository articleRepository) {
+    public MemberService(MemberRepository memberRepository, ArticleRepository articleRepository) {
         this.memberRepository = memberRepository;
         this.articleRepository = articleRepository;
     }
@@ -32,11 +32,12 @@ public class MemberService {
         member.setEmail(req.getEmail());
         member.setPassword(req.getPassword());
 
-        return memberRepository.insert(member);
+        return memberRepository.save(member);
     }
 
     public Member update(MemberDTO req, Long id) {
-        Member member = memberRepository.findById(id);
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(id + "번 유저는 존재하지 않습니다."));
 
         if (memberRepository.existsByEmail(req.getEmail())
                 && !member.getEmail().equals(req.getEmail())) {
@@ -47,22 +48,23 @@ public class MemberService {
         member.setEmail(req.getEmail());
         member.setPassword(req.getPassword());
 
-        return memberRepository.update(member);
+        return memberRepository.save(member);
     }
 
     public Member getOne(Long id) {
-        return memberRepository.findById(id);
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저 id입니다."));
     }
 
     public List<Member> searchByName(String name) {
         return memberRepository.findByName(name);
     }
 
-    public boolean delete(Long id) {
+    public void delete(Long id) {
         if (articleRepository.existsByBoardId(id)){
             throw new RemainArticlesException("게시판에 작성한 게시글이 남아있어 삭제가 불가능합니다. member_id =" + id);
         }
-        return memberRepository.deleteById(id);
+        memberRepository.deleteById(id);
     }
 
     private void validateForCreate(MemberDTO req) {
