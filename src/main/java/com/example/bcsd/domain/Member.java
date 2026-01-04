@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+@Setter
 @Getter
 @Entity
 @Table(name = "member")
@@ -14,7 +15,6 @@ public class Member {
     @Id
     @Column(name = "ID")
     private Long id;
-    @Setter
     @Column(name = "name")
     private String name;
     @Column(name = "email")
