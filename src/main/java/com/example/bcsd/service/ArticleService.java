@@ -6,7 +6,6 @@ import com.example.bcsd.dto.ArticleDTO;
 import com.example.bcsd.exception.InvalidReferenceException;
 import com.example.bcsd.exception.MissingFieldException;
 import com.example.bcsd.repository.ArticleRepository;
-import com.example.bcsd.repository.MemoryArticleRepository;
 import com.example.bcsd.repository.MemoryMemberRepository;
 import com.example.bcsd.repository.BoardRepository;
 
@@ -17,12 +16,12 @@ import java.util.List;
 
 @Service
 public class ArticleService {
-    private final MemoryArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
     private final MemoryMemberRepository memberRepository;
     private final BoardRepository boardRepository;
 
     @Autowired
-    public ArticleService(MemoryArticleRepository articleRepository,
+    public ArticleService(ArticleRepository articleRepository,
                           MemoryMemberRepository memberRepository,
                           BoardRepository boardRepository) {
         this.articleRepository = articleRepository;
@@ -35,8 +34,9 @@ public class ArticleService {
         return articleRepository.findByBoardId(boardId);
     }
     // 1. READ - 하나만
-    public Article getOne(Long id){
-        return articleRepository.findById(id);
+    public Article getOne(Integer id){
+        return articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(id + "번 게시글이 없습니다."));;
     }
     // 2. CREATE
     public Article create(ArticleDTO req){
@@ -55,10 +55,10 @@ public class ArticleService {
         article.setAuthorId(req.getAuthorId());
         article.setBoardId(req.getBoardId());
 
-        return articleRepository.insert(article);
+        return articleRepository.save(article);
     }
     // 3. UPDATE
-    public Article update(ArticleDTO req, Long id){
+    public Article update(ArticleDTO req, Integer id){
         if (!memberRepository.existsById(req.getAuthorId())) {
             throw new InvalidReferenceException("존재하지 않는 사용자입니다. author_id: " + req.getAuthorId());
         }
@@ -67,18 +67,19 @@ public class ArticleService {
             throw new InvalidReferenceException("존재하지 않는 게시판입니다. board_id: " + req.getBoardId());
         }
 
-        Article article = articleRepository.findById(id);
+        Article article = articleRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(id + "번 게시글이 없습니다."));;
 
         article.setTitle(req.getTitle());
         article.setContent(req.getContent());
         article.setBoardId(req.getBoardId());
         article.setAuthorId(req.getAuthorId());
 
-        return articleRepository.update(article);
+        return articleRepository.save(article);
     }
     // 4. DELETE
-    public boolean delete(Long id){
-        return articleRepository.deleteById(id);
+    public void delete(Integer id){
+        articleRepository.deleteById(id);
     }
 
     private void validateForCreate(ArticleDTO req) {

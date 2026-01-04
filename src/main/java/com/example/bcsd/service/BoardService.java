@@ -4,15 +4,15 @@ import com.example.bcsd.dto.BoardDTO;
 import com.example.bcsd.exception.MissingFieldException;
 import com.example.bcsd.exception.RemainArticlesException;
 import com.example.bcsd.repository.BoardRepository;
-import com.example.bcsd.repository.MemoryArticleRepository;
+import com.example.bcsd.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
-    private final MemoryArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
 
-    public BoardService(BoardRepository boardRepository,  MemoryArticleRepository articleRepository) {
+    public BoardService(BoardRepository boardRepository, ArticleRepository articleRepository) {
         this.boardRepository = boardRepository;
         this.articleRepository = articleRepository;
     }
