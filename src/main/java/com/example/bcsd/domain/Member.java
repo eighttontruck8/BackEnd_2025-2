@@ -1,11 +1,11 @@
 package com.example.bcsd.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -15,10 +15,10 @@ public class Member {
     @Id
     @Column(name = "ID")
     private Long id;
-    @Column(name = "name")
     private String name;
-    @Column(name = "email")
     private String email;
-    @Column(name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "author")
+    private List<Article> articles = new ArrayList<>();
 }
