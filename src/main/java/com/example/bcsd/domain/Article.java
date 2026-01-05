@@ -1,9 +1,6 @@
 package com.example.bcsd.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,15 +12,20 @@ import java.time.LocalDateTime;
 @Table(name = "article")
 public class Article {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JsonProperty("author_id")
-    private Long authorId;
-
-    @JsonProperty("board_id")
-    private Long boardId;
 
     private String title;
     private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private Member authorId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id", nullable = false)
+    private Board boardId;
+
     private LocalDateTime updatedAt;
     private LocalDateTime createdAt;
 
