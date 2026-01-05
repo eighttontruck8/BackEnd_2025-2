@@ -1,5 +1,6 @@
 package com.example.bcsd.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class Board {
     @OneToMany(mappedBy = "board",     // 연관관계의 주인은 Article.board
             cascade = CascadeType.ALL, // 부모의 영속성을 자식(Article)에게도
             orphanRemoval = true)      // 고아 객체 제거 옵션 활성화
+    @JsonIgnore
     private List<Article> articles = new ArrayList<>();
 
     public Board(){}

@@ -27,4 +27,5 @@ public class BoardController {
         boardService.delete(id);
         return ResponseEntity.noContent().build(); // 204
     }
+    
 }

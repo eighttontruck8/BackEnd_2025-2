@@ -1,5 +1,6 @@
 package com.example.bcsd.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,5 +22,6 @@ public class Member {
     private String password;
 
     @OneToMany(mappedBy = "author")
+    @JsonIgnore
     private List<Article> articles = new ArrayList<>();
 }
