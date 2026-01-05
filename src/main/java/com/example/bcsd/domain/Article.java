@@ -20,14 +20,20 @@ public class Article {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
-    private Member authorId;
+    private Member author;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", nullable = false)
-    private Board boardId;
+    private Board board;
 
     private LocalDateTime updatedAt;
     private LocalDateTime createdAt;
 
     public Article(){}
+    public Article(Member author, Board board, String title, String content) {
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.board = board;
+    }
 }
