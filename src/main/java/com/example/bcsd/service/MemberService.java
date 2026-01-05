@@ -61,8 +61,8 @@ public class MemberService {
     }
 
     public void delete(Long id) {
-        if (articleRepository.existsByBoardId(id)){
-            throw new RemainArticlesException("게시판에 작성한 게시글이 남아있어 삭제가 불가능합니다. member_id =" + id);
+        if (articleRepository.existsByAuthorId(id)){
+            throw new RemainArticlesException("회원이 작성한 게시글이 남아있어 삭제가 불가능합니다. member_id =" + id);
         }
         memberRepository.deleteById(id);
     }

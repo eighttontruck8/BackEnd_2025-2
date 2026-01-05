@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article,Long> {
     boolean existsByBoardId(Long id);
+    boolean existsByAuthorId(Long authorId);
     List<Article> findByBoardId(Long boardId);
 }

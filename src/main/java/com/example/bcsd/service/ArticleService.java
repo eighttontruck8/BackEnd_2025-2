@@ -1,6 +1,8 @@
 package com.example.bcsd.service;
 
 import com.example.bcsd.domain.Article;
+import com.example.bcsd.domain.Board;
+import com.example.bcsd.domain.Member;
 import com.example.bcsd.dto.ArticleDTO;
 
 import com.example.bcsd.exception.InvalidReferenceException;
@@ -41,22 +43,21 @@ public class ArticleService {
     // 2. CREATE
     public Article create(ArticleDTO req){
         validateForCreate(req);
-        if (!memberRepository.existsById(req.getAuthorId())) {
-            throw new InvalidReferenceException("존재하지 않는 사용자입니다. author_id: " + req.getAuthorId());
-        }
+        Member author = memberRepository.findById(req.getAuthorId())
+                .orElseThrow(() -> new InvalidReferenceException("존재하지 않는 사용자입니다. author_id: " + req.getAuthorId()));
 
-        if (!boardRepository.existsById(req.getBoardId())) {
-            throw new InvalidReferenceException("존재하지 않는 게시판입니다. board_id: " + req.getBoardId());
-        }
+        Board board = boardRepository.findById(req.getBoardId())
+                .orElseThrow(() -> new InvalidReferenceException("존재하지 않는 게시판입니다. board_id: " + req.getBoardId()));
 
         Article article = new Article();
         article.setTitle(req.getTitle());
         article.setContent(req.getContent());
-        article.setAuthorId(req.getAuthorId());
-        article.setBoardId(req.getBoardId());
+        article.setAuthor(author);
 
-        return articleRepository.save(article);
+        boardRepository.save(board);
+        return article;
     }
+
     // 3. UPDATE
     public Article update(ArticleDTO req, Long id){
         if (!memberRepository.existsById(req.getAuthorId())) {
@@ -72,8 +73,6 @@ public class ArticleService {
 
         article.setTitle(req.getTitle());
         article.setContent(req.getContent());
-        article.setBoardId(req.getBoardId());
-        article.setAuthorId(req.getAuthorId());
 
         return articleRepository.save(article);
     }
@@ -103,5 +102,4 @@ public class ArticleService {
             throw new MissingFieldException("boardId는 null일 수 없습니다.");
         }
     }
-
 }

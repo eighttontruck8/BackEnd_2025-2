@@ -36,4 +36,6 @@ public class Article {
         this.author = author;
         this.board = board;
     }
+
+
 }

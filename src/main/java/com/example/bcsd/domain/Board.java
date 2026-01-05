@@ -13,6 +13,7 @@ import java.util.List;
 @Table(name = "board")
 public class Board {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title; // 게시판 이름
 
@@ -25,5 +26,16 @@ public class Board {
     public Board(){}
     public Board(String title) {
         this.title = title;
+    }
+
+    // 연관관계 편의 메서드
+    public void addArticle(Article article) {
+        articles.add(article);
+        article.setBoard(this);
+    }
+
+    public void removeArticle(Article article) {
+        articles.remove(article);
+        article.setBoard(null);
     }
 }

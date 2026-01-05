@@ -28,9 +28,7 @@ public class BoardService {
     }
 
     public void delete(Long id) {
-        if (articleRepository.existsByBoardId(id)){
-            throw new RemainArticlesException("게시판에 작성한 게시글이 남아있어 삭제가 불가능합니다. board_id =" + id);
-        }
+        // 이제 게시판에 게시글이 남아있어도 삭제 가능(부모-자식)
         boardRepository.deleteById(id);
     }
 
