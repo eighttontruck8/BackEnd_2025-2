@@ -35,7 +35,6 @@ public class BoardService {
     }
 
     private void validateForCreate(BoardDTO req) {
-
         if (req.getTitle() == null || req.getTitle().isBlank()) {
             throw new MissingFieldException("title은 null일 수 없습니다.");
         }
