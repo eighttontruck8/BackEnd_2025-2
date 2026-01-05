@@ -5,16 +5,15 @@ import com.example.bcsd.exception.MissingFieldException;
 import com.example.bcsd.exception.RemainArticlesException;
 import com.example.bcsd.repository.BoardRepository;
 import com.example.bcsd.repository.ArticleRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
-    private final ArticleRepository articleRepository;
 
     public BoardService(BoardRepository boardRepository, ArticleRepository articleRepository) {
         this.boardRepository = boardRepository;
-        this.articleRepository = articleRepository;
     }
 
     public Board create(BoardDTO req) {
@@ -42,5 +41,10 @@ public class BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException(boardId + "번 게시판이 없습니다."));
         return board.getTitle();
+    }
+
+    public Board getOne(Long id) {
+        return boardRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(id + "번 게시판이 없습니다."));
     }
 }

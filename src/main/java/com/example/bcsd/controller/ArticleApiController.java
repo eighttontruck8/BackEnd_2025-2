@@ -3,6 +3,7 @@ package com.example.bcsd.controller;
 import com.example.bcsd.domain.Article;
 import com.example.bcsd.dto.ArticleDTO;
 
+import com.example.bcsd.dto.ArticleResponse;
 import com.example.bcsd.service.ArticleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,13 @@ public class ArticleApiController {
     public List<Article> getAllArticlesByBoard(@RequestParam(required = false) Long boardId){
         return articleService.getAllArticlesByBoard(boardId);
     }
-
+    @GetMapping("/by-board")
+    public List<ArticleResponse> getByBoard(@RequestParam Long boardId) {
+        return articleService.getAllArticlesByBoard(boardId)
+                .stream()
+                .map(ArticleResponse::from)
+                .toList();
+    }
     // 3. GET /articles/{id} : 아이디로 article 찾기
     @GetMapping("/{id}")
     public Article getOne(@PathVariable Long id){
@@ -50,4 +57,5 @@ public class ArticleApiController {
         // 예외는 service에서만!
         return ResponseEntity.noContent().build();  // 204
     }
+
 }

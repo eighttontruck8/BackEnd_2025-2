@@ -2,6 +2,7 @@ package com.example.bcsd.controller;
 
 import com.example.bcsd.domain.Board;
 import com.example.bcsd.dto.BoardDTO;
+import com.example.bcsd.dto.BoardResponse;
 import com.example.bcsd.service.BoardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +28,11 @@ public class BoardController {
         boardService.delete(id);
         return ResponseEntity.noContent().build(); // 204
     }
-    
+
+    // 3. GET /board/{id} : 게시판 id로 게시글 조회하기
+    @GetMapping("/{id}")
+    public BoardResponse getOne(@PathVariable Long id) {
+//        return boardService.getOne(id);
+        return BoardResponse.from(boardService.getOne(id));
+    }
 }
