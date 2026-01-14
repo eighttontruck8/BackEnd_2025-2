@@ -84,7 +84,7 @@ public class MemberService {
             throw new MissingFieldException("password은 null일 수 없습니다.");
         }
     }
-    private Member login(MemberDTO req) {
+    public Member login(MemberDTO req) {
         String email = req.getEmail();
         String password = req.getPassword();
         if (email == null || email.isBlank()) { throw new MissingFieldException("email은 null일수 없습니다.");}
