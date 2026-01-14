@@ -7,12 +7,12 @@ import com.example.bcsd.exception.MissingFieldException;
 import com.example.bcsd.exception.RemainArticlesException;
 import com.example.bcsd.repository.ArticleRepository;
 import com.example.bcsd.repository.MemberRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -49,7 +49,7 @@ public class MemberService {
 
         member.setName(req.getName());
         member.setEmail(req.getEmail());
-        member.setPassword(req.getPassword());
+        member.setPassword(passwordEncoder.encode(req.getPassword())); // 암호화로 변경
 
         return memberRepository.save(member);
     }
@@ -83,5 +83,18 @@ public class MemberService {
         if (req.getPassword() == null || req.getPassword().isBlank()) {
             throw new MissingFieldException("password은 null일 수 없습니다.");
         }
+    }
+    private Member login(MemberDTO req) {
+        String email = req.getEmail();
+        String password = req.getPassword();
+        if (email == null || email.isBlank()) { throw new MissingFieldException("email은 null일수 없습니다.");}
+        if (password == null || password.isBlank()) { throw new MissingFieldException("password는 null일수 없습니다.");}
+
+        Member member = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("이메일 또는 비밀번호를 다시 확인해주세요."));
+        if (!passwordEncoder.matches(password, member.getPassword())) {
+            throw new IllegalArgumentException("이메일 또는 비밀번호를 다시 확인해주세요.");
+        }
+        return member;
     }
 }
