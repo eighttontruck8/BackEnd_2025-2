@@ -97,4 +97,28 @@ public class MemberService {
         }
         return member;
     }
+
+    public Member signup(MemberDTO req) {
+        Member member = new Member();
+
+        String name = req.getName();
+        String email = req.getEmail();
+        String password = passwordEncoder.encode(req.getPassword());
+
+        // 이메일 중복 체크
+        if (memberRepository.existsByEmail(email)) {
+            throw new DuplicateEmailException("이미 사용 중인 이메일입니다.");
+        }
+
+        // 필드 빈칸 체크
+        if (name == null || name.isBlank()) { throw new MissingFieldException("name은 null일 수 없습니다.");}
+        if (email == null || email.isBlank()) { throw new MissingFieldException("email은 null일 수 없습니다.");}
+        if (password == null || password.isBlank()) { throw new MissingFieldException("password은 null일 수 없습니다.");}
+
+        member.setName(name);
+        member.setEmail(email);
+        member.setPassword(password);
+
+        return memberRepository.save(member);
+    }
 }

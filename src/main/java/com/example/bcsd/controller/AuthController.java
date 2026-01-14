@@ -23,4 +23,10 @@ public class AuthController {
         memberService.login(req);
         return ResponseEntity.ok("login success");
     }
+
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody MemberDTO req) {
+        memberService.signup(req);
+        return ResponseEntity.ok("signup success");
+    }
 }

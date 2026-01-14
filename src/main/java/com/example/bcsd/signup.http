@@ -1,8 +1,9 @@
-### 로그인 테스트
-POST http://localhost:8080/auth/login
+### 회원가입 테스트
+POST http://localhost:8080/auth/signup
 Content-Type: application/json
 
 {
+  "name": "haein",
   "email": "haein1234@abc.com",
   "password": "123"
 }
