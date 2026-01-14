@@ -9,6 +9,7 @@ import com.example.bcsd.repository.ArticleRepository;
 import com.example.bcsd.repository.MemberRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +19,13 @@ import java.util.List;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired // 생성자 호출할 때 MemberRepository(실제로는 구현부인 MemoryMemberRepository)를 넣어줌!
-    public MemberService(MemberRepository memberRepository, ArticleRepository articleRepository) {
+    public MemberService(MemberRepository memberRepository, ArticleRepository articleRepository, PasswordEncoder passwordEncoder) {
         this.memberRepository = memberRepository;
         this.articleRepository = articleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Member create(MemberDTO req) {
@@ -31,7 +34,6 @@ public class MemberService {
         Member member = new Member();
         member.setName(req.getName());
         member.setEmail(req.getEmail());
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         member.setPassword(passwordEncoder.encode(req.getPassword()));
         return memberRepository.save(member);
     }
