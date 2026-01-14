@@ -7,6 +7,7 @@ import com.example.bcsd.exception.MissingFieldException;
 import com.example.bcsd.exception.RemainArticlesException;
 import com.example.bcsd.repository.ArticleRepository;
 import com.example.bcsd.repository.MemberRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +31,8 @@ public class MemberService {
         Member member = new Member();
         member.setName(req.getName());
         member.setEmail(req.getEmail());
-        member.setPassword(req.getPassword());
-
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        member.setPassword(passwordEncoder.encode(req.getPassword()));
         return memberRepository.save(member);
     }
 
@@ -80,8 +81,5 @@ public class MemberService {
         if (req.getPassword() == null || req.getPassword().isBlank()) {
             throw new MissingFieldException("password은 null일 수 없습니다.");
         }
-    }
-    private void validateForDelete(MemberDTO req) {
-
     }
 }
