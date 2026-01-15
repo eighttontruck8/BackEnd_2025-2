@@ -25,11 +25,13 @@ public class ArticleService {
     public List<Article> getAllArticlesByBoard(Long boardId){
         return articleRepository.findByBoardId(boardId);
     }
+
     // 1. READ - 하나만
     public Article getOne(Long id){
         return articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(id + "번 게시글이 없습니다."));
     }
+
     // 2. CREATE
     public Article create(ArticleDTO req){
         validateForCreate(req);
@@ -66,6 +68,7 @@ public class ArticleService {
 
         return articleRepository.save(article);
     }
+
     // 4. DELETE
     public void delete(Long id){
         if (!articleRepository.existsById(id)) {
@@ -75,19 +78,15 @@ public class ArticleService {
     }
 
     private void validateForCreate(ArticleDTO req) {
-
         if (req.getTitle() == null || req.getTitle().isBlank()) {
             throw new MissingFieldException("title은 null일 수 없습니다.");
         }
-
         if (req.getContent() == null || req.getContent().isBlank()) {
             throw new MissingFieldException("content는 null일 수 없습니다.");
         }
-
         if (req.getAuthorId() == null) {
             throw new MissingFieldException("authorId는 null일 수 없습니다.");
         }
-
         if (req.getBoardId() == null) {
             throw new MissingFieldException("boardId는 null일 수 없습니다.");
         }
