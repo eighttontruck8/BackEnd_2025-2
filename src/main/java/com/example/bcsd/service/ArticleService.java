@@ -4,32 +4,22 @@ import com.example.bcsd.domain.Article;
 import com.example.bcsd.domain.Board;
 import com.example.bcsd.domain.Member;
 import com.example.bcsd.dto.ArticleDTO;
-
 import com.example.bcsd.exception.InvalidReferenceException;
 import com.example.bcsd.exception.MissingFieldException;
 import com.example.bcsd.repository.ArticleRepository;
 import com.example.bcsd.repository.MemberRepository;
 import com.example.bcsd.repository.BoardRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
-
-    @Autowired
-    public ArticleService(ArticleRepository articleRepository,
-                          MemberRepository memberRepository,
-                          BoardRepository boardRepository) {
-        this.articleRepository = articleRepository;
-        this.memberRepository = memberRepository;
-        this.boardRepository = boardRepository;
-    }
 
     // 1. READ - board의 전체 article
     public List<Article> getAllArticlesByBoard(Long boardId){

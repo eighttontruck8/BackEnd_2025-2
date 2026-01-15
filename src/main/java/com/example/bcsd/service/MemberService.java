@@ -7,26 +7,18 @@ import com.example.bcsd.exception.MissingFieldException;
 import com.example.bcsd.exception.RemainArticlesException;
 import com.example.bcsd.repository.ArticleRepository;
 import com.example.bcsd.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-
+@RequiredArgsConstructor
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired // 생성자 호출할 때 MemberRepository(실제로는 구현부인 MemoryMemberRepository)를 넣어줌!
-    public MemberService(MemberRepository memberRepository, ArticleRepository articleRepository, PasswordEncoder passwordEncoder) {
-        this.memberRepository = memberRepository;
-        this.articleRepository = articleRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     public Member create(MemberDTO req) {
         validateForCreate(req);
@@ -84,7 +76,7 @@ public class MemberService {
             throw new MissingFieldException("password은 null일 수 없습니다.");
         }
     }
-    public Member login(MemberDTO req) {
+    public void login(MemberDTO req) {
         String email = req.getEmail();
         String password = req.getPassword();
         if (email == null || email.isBlank()) { throw new MissingFieldException("email은 null일수 없습니다.");}
@@ -95,10 +87,9 @@ public class MemberService {
         if (!passwordEncoder.matches(password, member.getPassword())) {
             throw new IllegalArgumentException("이메일 또는 비밀번호를 다시 확인해주세요.");
         }
-        return member;
     }
 
-    public Member signup(MemberDTO req) {
+    public void signup(MemberDTO req) {
         Member member = new Member();
 
         String name = req.getName();
@@ -119,6 +110,6 @@ public class MemberService {
         member.setEmail(email);
         member.setPassword(password);
 
-        return memberRepository.save(member);
+        memberRepository.save(member);
     }
 }

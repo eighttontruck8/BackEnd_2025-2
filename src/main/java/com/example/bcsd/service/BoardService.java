@@ -2,15 +2,14 @@ package com.example.bcsd.service;
 import com.example.bcsd.domain.Board;
 import com.example.bcsd.dto.BoardDTO;
 import com.example.bcsd.exception.MissingFieldException;
-import com.example.bcsd.exception.RemainArticlesException;
 import com.example.bcsd.repository.BoardRepository;
 import com.example.bcsd.repository.ArticleRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
+
 
     public BoardService(BoardRepository boardRepository, ArticleRepository articleRepository) {
         this.boardRepository = boardRepository;
